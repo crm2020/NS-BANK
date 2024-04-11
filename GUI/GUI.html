@@ -1,35 +1,6 @@
 <html lang="en">
 <head>
-    <script>
-    let currentImage = 1; // Index of the current image
-    const imges = ['GUI\\bedrag-keuze.png', 'GUI\\biljet-keuze-menu.png', 'GUI\\geld-opnemen-menu.png', 'GUI\\hoofd-menu.png', 'GUI\\inlog-pagina.png', 'GUI\\ongeldig-bedrag.png', 'GUI\\saldo-pagina.png', 'GUI\\snel-pinnen.png', 'GUI\\welkom-pagina.png'];
 
-    // Function to change the image
-    function changeImage(direction) {
-        // Ensure the index stays within the bounds of the images
-        if (imges.indexOf(currentImage) == imges.length-1) {
-            currentImage = imges[1];
-        }
-        currentImage +=direction; // Increment or decrement the current image index
-
-
-        const mainImage = document.getElementById('mainImage');
-        mainImage.src = imges[currentImage]; // Change the image source
-        console.log(currentImage);
-    }
-
-    // Event listener for keydown events
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'ArrowLeft') {
-            changeImage(-1); // Move to the previous image when left arrow key is pressed
-            document.getElementById("textbox").value = "";
-        } else if (event.key === 'ArrowRight') {
-            changeImage(1); // Move to the next image when right arrow key is pressed
-            document.getElementById("textbox").value = "";
-        }
-    });
-
-    </script>
     <style>
         body, html {
             margin: 0;
@@ -63,12 +34,13 @@
         }
 
         #textbox {
-            width: 1000px;
+            width: 800px;
             padding: 10px;
             font-size: 45px;
             text-align: center;
+            letter-spacing: 1px;
             border: none;
-            background-color: transparent;
+            background-color: #AEAEAE;
             color: black;
             outline: none;
         }
@@ -78,11 +50,15 @@
     <title>GUI</title>
 </head>
 <body>
+    <button id="connectButton">Connect to Serial</button>
+
     <div class="image-container">
         <img src="GUI\welkom-pagina.png" id="mainImage" alt="welkom-pagina">
     </div>
     <div class="textbox-container">
         <input type="text" id="textbox" value="Scan uw pas om te beginnen">
     </div>
+    <script src="main.js"></script>
+    <script src="serial-coms.js"></script>
 </body>
 </html>
