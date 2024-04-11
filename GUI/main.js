@@ -24,14 +24,14 @@ class Pagina {
     }
 }
 
-let einde =           new Pagina("einde", '', true);
+let einde =           new Pagina("einde", 'GUI\\einde.png', true);
 let snelPinnen =      new Pagina("snelPinnen", 'GUI\\snel-pinnen.png', true);
 let ongeldigBedrag =  new Pagina("ongeldigBedrag", 'GUI\\ongeldig-bedrag.png', true);
 let biljetKeuze =     new Pagina("biljetKeuze", 'GUI\\biljet-keuze-menu.png', false); //-
 let bedragKeuze =     new Pagina("bedragKeuze", 'GUI\\bedrag-keuze.png', true);
 let geldOpnemen =     new Pagina("geldOpnemen", 'GUI\\geld-opnemen-menu.png', false);//- "ok" keuze is bedrag keuze
 let saldo =           new Pagina("saldo", 'GUI\\saldo-pagina.png', true);
-let taal =            new Pagina("taal", '', false); //-
+let taal =            new Pagina("taal", 'GUI\\taal-keuze.png', false); //-
 let hoofdMenu =       new Pagina("hoofdMenu", 'GUI\\hoofd-menu.png', false);//-
 let PINinvoer =       new Pagina("PINinvoer", 'GUI\\inlog-pagina.png', true);
 let start =           new Pagina("start", 'GUI\\welkom-pagina.png', true);
