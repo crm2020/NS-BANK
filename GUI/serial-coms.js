@@ -14,16 +14,11 @@ document.getElementById('connectButton').addEventListener('click', async () => {
           break;
         }
         // ---------------------------------------------
-        console.log('Received data:', Number(value));
-        changePageTo(Number(value));
-
-        // if (Number(value)){
-        //   const p = document.getElementById('text');
-        //   p.style.opacity = 1;
-        // }else{
-        //   const p = document.getElementById('text');
-        //   p.style.opacity = 0;
-        // }
+        const waarde = Number(value);
+        if (waarde != NaN) {
+          changePageTo(waarde);
+        }
+      
 
 
         //----------------------------------------------
@@ -36,3 +31,4 @@ document.getElementById('connectButton').addEventListener('click', async () => {
     console.error('Error opening serial port:', err);
   }
 });
+
