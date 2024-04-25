@@ -2,6 +2,7 @@ const mainImage = document.getElementById('mainImage');
 let currentPagina = null;
 let ondertitel = document.getElementById('textbox');
 let timer;
+let geldAmount;
 
 const back = 3;
 const ok = 6;
@@ -11,16 +12,6 @@ class Pagina {
         this.name = name;
         this.image = image;
         this.TitelPagina = TitelPagina;
-        this.linksTo = linksTo;
-        this.prevPagina = prevPagina;
-    }
-
-    setLinks(page) {
-        this.linksTo = page;
-    }
-
-    setPrev(page) {
-        this.prevPagina = page;
     }
 }
 
@@ -35,29 +26,6 @@ let taal =            new Pagina("taal", 'GUI\\taal-keuze.png', false); //-
 let hoofdMenu =       new Pagina("hoofdMenu", 'GUI\\hoofd-menu.png', false);//-
 let PINinvoer =       new Pagina("PINinvoer", 'GUI\\inlog-pagina.png', true);
 let start =           new Pagina("start", 'GUI\\welkom-pagina.png', true);
-
-einde.setLinks(start);
-einde.setPrev(null);
-snelPinnen.setLinks(einde);
-snelPinnen.setPrev(hoofdMenu);
-ongeldigBedrag.setLinks(null);
-ongeldigBedrag.setPrev(bedragKeuze);
-biljetKeuze.setLinks(einde);
-biljetKeuze.setPrev(bedragKeuze);
-bedragKeuze.setLinks(biljetKeuze);
-bedragKeuze.setPrev(geldOpnemen);
-geldOpnemen.setLinks(bedragKeuze);
-geldOpnemen.setPrev(hoofdMenu);
-saldo.setLinks(geldOpnemen);
-saldo.setPrev(hoofdMenu);
-taal.setLinks([null,null,null,null,null,null]);
-taal.setPrev(hoofdMenu);
-hoofdMenu.setLinks([taal,null,start,saldo,geldOpnemen,snelPinnen]);
-hoofdMenu.setPrev(null);
-PINinvoer.setLinks(hoofdMenu);
-PINinvoer.setPrev(start);
-start.setLinks(PINinvoer);
-start.setPrev(null);
 
 currentPagina = start;
 mainImage.src = currentPagina.image;
@@ -127,35 +95,97 @@ function changePageTo(option) {
             case snelPinnen:
                 currentPagina = einde;
                 break;
+            case hoofdMenu:
+                currentPagina = snelPinnen;
+            default:
+                break;
+        }
+    }else if (option == 1){
+        switch (currentPagina) {
+            case hoofdMenu:
+                currentPagina = taal;
+                break;
+            case taal:
+                //todo
+                break;
+            case geldOpnemen:
+                geldAmount = 10;
+                currentPagina = einde;
+                break;
+            case biljetKeuze:
+                //niks
+                break;
+            default:
+                break;
+        }
 
+    }else if (option == 2){
+        switch (currentPagina) {
+            case hoofdMenu:
+                break;
+            case taal:
+                //todo
+                break;
+            case geldOpnemen:
+                geldAmount = 10;
+                currentPagina = einde;
+                break;
+            case biljetKeuze:
+                //niks
+                break;
+            default:
+                break;
+        }
+    }else if (option == 4){
+        switch (currentPagina) {
+            case hoofdMenu:
+                currentPagina = saldo;
+                break;
+            case taal:
+                //todo
+                break;
+            case geldOpnemen:
+                geldAmount = 20;
+                currentPagina = einde;
+                break;
+            case biljetKeuze:
+                //biljet keuze toevoegen
+                break;
+            default:
+                break;
+        }
+    }else if (option == 5){
+        switch (currentPagina) {
+            case hoofdMenu:
+                currentPagina = geldOpnemen;
+                break;
+            case taal:
+                //todo
+                break;
+            case geldOpnemen:
+                //niks
+                break;
+            case biljetKeuze:
+                //biljet keuze toevoegen
+                break;
             default:
                 break;
         }
     }
 
 
-    // switch (currentPagina) {
-    //     case start:
-    //         setTimeout(() => {ondertitel.value = "****"},1000);
-    //         currentPagina = PINinvoer;
-    //         break;
-
-    //     case PINinvoer:
-    //         if(option == 1){
-    //             currentPagina = currentPagina.linksTo;
-    //         }
-    //         setTimeout(() => {ondertitel.value = ""}, 1000);
-    //         setTimeout(() => {ondertitel.style.opacity = 0}, 1000);
-    //         break;
-    
-    //     default:
-    //         break;
-    // }
     if (!currentPagina.TitelPagina) {
         setTimeout(() => {ondertitel.style.opacity = 0;}, 900);
     }
+    if (currentPagina == taal){
+        document.getElementById("wip").style.opacity = "1";
+    } else {
+        document.getElementById("wip").style.opacity = "0";
+    }
+    
     setTimeout(() => {mainImage.src = currentPagina.image},900);
 
+    document.getElementById("titel").innerText = currentPagina.name;
     }, 120);
 
 }

@@ -5,6 +5,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
+            overflow: hidden;
         }
         .image-container {
             width: 100%;
@@ -58,6 +59,10 @@
                 height: 100%;
                 opacity: 100%;
             }
+            80% {
+                height: 100%;
+                opacity: 100%;
+            }
             100% {
                 height: 100%;
                 opacity: 0%;
@@ -66,10 +71,25 @@
         .wipe-effect {
             animation: wipeAnimation 2s ease forwards;
         }
+        .wip-element {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 200;
+            background-color: transparent;
+            color: red;
+            font-size: 600px;
+            text-align: center;
+            transform: rotate(-35deg);
+            z-index: 999; /* Ensure it's on top of other content */
+            overflow: hidden;
+            opacity: 0;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GUI</title>
+    <title id="titel">GUI</title>
 </head>
 <body>
     <button id="connectButton">Connect to Serial</button>
@@ -83,5 +103,6 @@
     <script src="main.js"></script>
     <script src="serial-coms.js"></script>
     <div id="loadingScreen" class="loading-screen"></div>
+    <div class="wip-element" id="wip">W.I.P</div>
 </body>
 </html>
