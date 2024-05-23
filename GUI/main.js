@@ -3,9 +3,10 @@ let currentPagina = null;
 let ondertitel = document.getElementById('textbox');
 let timer;
 let geldAmount;
+let pin = "";
 
-const back = 3;
-const ok = 6;
+const back = 103;
+const ok = 106;
 
 class Pagina {
     constructor(name, image, TitelPagina, linksTo, prevPagina) {
@@ -29,48 +30,65 @@ let start =           new Pagina("start", 'GUI\\welkom-pagina.png', true);
 
 currentPagina = start;
 mainImage.src = currentPagina.image;
-ondertitel.style.opacity = 0;
+ondertitel.style.opacity = 1;
 
-function changePageTo(option) {
-    clearTimeout(timer);
-    timer = setTimeout(() =>{
-    console.log('Received data:', option);
+function setPin(n){
+    n = n%200
+
+    if (n == 10) {
+        
+    }
+
+    n += n.toString();
+    
+}
+
+function setPage(page){
     const loadingScreen = document.getElementById('loadingScreen');
     loadingScreen.classList.add('wipe-effect');
     setTimeout(function() {
         loadingScreen.classList.remove('wipe-effect');
     }, 2000);
+    currentPagina = page;
+    setTimeout(() => {mainImage.src = currentPagina.image},900);
+
+}
+
+function changePageTo(option) {
+    clearTimeout(timer);
+    timer = setTimeout(() =>{
+    console.log('Received data:', option);
 
     if (currentPagina == start){
-        currentPagina = PINinvoer;
+        setPage(PINinvoer);
     }else if (option == back) {
         switch (currentPagina) {
             case PINinvoer:
-                currentPagina = start;
+                setPage(start);
                 break;
             case hoofdMenu:
-                currentPagina = start;
+                setPage(start);
                 break;
             case taal:
-                currentPagina = hoofdMenu;
+                setPage(hoofdMenu);
                 break;
             case saldo:
-                currentPagina = hoofdMenu;
+                setPage(hoofdMenu);
                 break;
             case geldOpnemen:
-                currentPagina = hoofdMenu;
+                setPage(hoofdMenu);
                 break;
             case bedragKeuze:
-                currentPagina = geldOpnemen;
+                setPage(geldOpnemen);
                 break;
             case biljetKeuze:
-                currentPagina = bedragKeuze;
+                setPage(bedragKeuze);
                 break;
             case ongeldigBedrag:
-                currentPagina = bedragKeuze;
+                setPage(bedragKeuze);
                 break;
             case snelPinnen:
-                currentPagina = hoofdMenu;
+                setPage(hoofdMenu);
                 break;
 
             default:
@@ -80,37 +98,37 @@ function changePageTo(option) {
         switch (currentPagina) {
             case PINinvoer:
                 //check if pin is ok
-                currentPagina = hoofdMenu;
+                setPage(hoofdMenu);
                 break;
             case saldo:
-                currentPagina = geldOpnemen;
+                setPage(geldOpnemen);
                 break;
             case geldOpnemen:
-                currentPagina = bedragKeuze;
+                setPage(bedragKeuze);
                 break;
             case bedragKeuze:
                 //check if input amount is ok
-                currentPagina = geldOpnemen;
+                setPage(geldOpnemen);
                 break;
             case snelPinnen:
-                currentPagina = einde;
+                setPage(einde);
                 break;
             case hoofdMenu:
-                currentPagina = snelPinnen;
+                setPage(snelPinnen);
             default:
                 break;
         }
-    }else if (option == 1){
+    }else if (option == 101){
         switch (currentPagina) {
             case hoofdMenu:
-                currentPagina = taal;
+                setPage(taal);
                 break;
             case taal:
                 //todo
                 break;
             case geldOpnemen:
                 geldAmount = 10;
-                currentPagina = einde;
+                setPage(einde);
                 break;
             case biljetKeuze:
                 //niks
@@ -119,7 +137,7 @@ function changePageTo(option) {
                 break;
         }
 
-    }else if (option == 2){
+    }else if (option == 102){
         switch (currentPagina) {
             case hoofdMenu:
                 break;
@@ -128,7 +146,7 @@ function changePageTo(option) {
                 break;
             case geldOpnemen:
                 geldAmount = 10;
-                currentPagina = einde;
+                setPage(einde);
                 break;
             case biljetKeuze:
                 //niks
@@ -136,17 +154,17 @@ function changePageTo(option) {
             default:
                 break;
         }
-    }else if (option == 4){
+    }else if (option == 104){
         switch (currentPagina) {
             case hoofdMenu:
-                currentPagina = saldo;
+                setPage(saldo);
                 break;
             case taal:
                 //todo
                 break;
             case geldOpnemen:
                 geldAmount = 20;
-                currentPagina = einde;
+                setPage(einde);
                 break;
             case biljetKeuze:
                 //biljet keuze toevoegen
@@ -154,10 +172,10 @@ function changePageTo(option) {
             default:
                 break;
         }
-    }else if (option == 5){
+    }else if (option == 105){
         switch (currentPagina) {
             case hoofdMenu:
-                currentPagina = geldOpnemen;
+                setPage(geldOpnemen);
                 break;
             case taal:
                 //todo
@@ -183,14 +201,15 @@ function changePageTo(option) {
     } else {
         setTimeout(() => {document.getElementById("wip").style.opacity = "0"},900);
     }
-    
-    setTimeout(() => {mainImage.src = currentPagina.image},900);
 
+    if (currentPagina == einde) {
+        setTimeout(() => {
+            setPage(start)
+        }, 11000);
+    }
+
+    //debug
     document.getElementById("titel").innerText = currentPagina.name;
     }, 120);
-
-}
-
-function pinBedrag(){
 
 }
