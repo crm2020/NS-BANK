@@ -177,10 +177,11 @@ function changePageTo(option) {
     if (!currentPagina.TitelPagina) {
         setTimeout(() => {ondertitel.style.opacity = 0;}, 900);
     }
+    
     if (currentPagina == taal){
-        document.getElementById("wip").style.opacity = "1";
+        setTimeout(() => {document.getElementById("wip").style.opacity = "1"},900);
     } else {
-        document.getElementById("wip").style.opacity = "0";
+        setTimeout(() => {document.getElementById("wip").style.opacity = "0"},900);
     }
     
     setTimeout(() => {mainImage.src = currentPagina.image},900);
