@@ -14,12 +14,17 @@
           break;
         }
         // ---------------------------------------------
+        /*
+        IBAN is tussen 48 en 90
+        100 - 110 is knoppen
+        200 - 210 is numpad
+        */
         const waarde = Number(value);
-        if (waarde != NaN && waarde >= 100) {
+        console.log(waarde)
+        if (waarde != NaN && waarde >= 100 && waarde < 200) {
           changePageTo(waarde);
         }else if (waarde >= 200) {
-          //pin stuff
-          
+          setPin(waarde);
         }
 
 

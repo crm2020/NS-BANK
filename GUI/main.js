@@ -30,16 +30,23 @@ let start =           new Pagina("start", 'GUI\\welkom-pagina.png', true);
 
 currentPagina = start;
 mainImage.src = currentPagina.image;
-ondertitel.style.opacity = 1;
+ondertitel.style.opacity = 0;
 
 function setPin(n){
     n = n%200
-
     if (n == 10) {
-        
-    }
+        pin = "";
+    }else{
+        if (pin.length != 4) {
+            pin += n.toString();
+        }else{
 
-    n += n.toString();
+        }
+    }
+    ondertitel.setAttribute('value', pin.replace(/./g, '*'))
+}
+
+function setBedrag(n) {
     
 }
 
@@ -58,6 +65,8 @@ function changePageTo(option) {
     clearTimeout(timer);
     timer = setTimeout(() =>{
     console.log('Received data:', option);
+
+    
 
     if (currentPagina == start){
         setPage(PINinvoer);
@@ -97,8 +106,17 @@ function changePageTo(option) {
     }else if (option == ok) {
         switch (currentPagina) {
             case PINinvoer:
-                //check if pin is ok
-                setPage(hoofdMenu);
+                pinCorrect = false //check bij database
+                if (pin.length == 4 || pinCorrect) {
+                    setPage(hoofdMenu);
+                    setPin(210);
+                }else{
+                    setPin(210);
+                    document.getElementById("textbox").style.backgroundColor = "#ff0000";
+                    setTimeout(() => {
+                        document.getElementById("textbox").style.backgroundColor = "#AEAEAE";
+                    }, 100);
+                }
                 break;
             case saldo:
                 setPage(geldOpnemen);
@@ -192,7 +210,9 @@ function changePageTo(option) {
     }
 
 
-    if (!currentPagina.TitelPagina) {
+    if (currentPagina == PINinvoer) {
+        setTimeout(() => {ondertitel.style.opacity = 1;}, 900);
+    }else{
         setTimeout(() => {ondertitel.style.opacity = 0;}, 900);
     }
     
