@@ -1,4 +1,4 @@
-  document.getElementById('connectButton').addEventListener('click', async () => {
+document.getElementById('connectButton').addEventListener('click', async () => {
   document.getElementById('connectButton').style.display = "none";
   try {
     const port = await navigator.serial.requestPort();
@@ -24,7 +24,11 @@
         if (waarde != NaN && waarde >= 100 && waarde < 200) {
           changePageTo(waarde);
         }else if (waarde >= 200) {
-          setPin(waarde);
+          if (currentPagina == PINinvoer) {
+            setPin(waarde);
+          }else if (currentPagina == bedragKeuze) {
+            setBedrag(waarde);
+          }
         }
 
 
