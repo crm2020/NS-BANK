@@ -1,7 +1,6 @@
 const mainImage = document.getElementById('mainImage');
 let currentPagina = null;
 let ondertitel = document.getElementById('textbox');
-let timer;
 let GekozenBedrag = "";
 let pin = "";
 
@@ -80,8 +79,6 @@ function setPage(page){
 }
 
 function changePageTo(option) {
-    clearTimeout(timer);
-    timer = setTimeout(() =>{
         console.log('Received data:', option);
 
 
@@ -246,6 +243,8 @@ function changePageTo(option) {
         }
 
         if (currentPagina == einde) {
+            pin = "";
+            GekozenBedrag = "";
             setTimeout(() => {
                 setPage(start)
             }, 11000);
@@ -253,6 +252,4 @@ function changePageTo(option) {
 
         //debug
         document.getElementById("titel").innerText = currentPagina.name;
-    }, 120);
-
 }

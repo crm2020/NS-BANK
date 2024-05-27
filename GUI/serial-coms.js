@@ -1,3 +1,24 @@
+let timer;
+
+let waarde;
+
+let availible = true;
+
+
+function HandleSerialInput() {
+  if (waarde != NaN && waarde >= 100 && waarde < 112) {
+    if (availible) {
+      changePageTo(waarde);
+    }
+  }else if (waarde >= 200 && waarde < 212) {
+    if (currentPagina == PINinvoer) {
+      setPin(waarde);
+    }else if (currentPagina == bedragKeuze) {
+      setBedrag(waarde);
+    }
+  }
+}
+
 document.getElementById('connectButton').addEventListener('click', async () => {
   document.getElementById('connectButton').style.display = "none";
   try {
@@ -19,17 +40,12 @@ document.getElementById('connectButton').addEventListener('click', async () => {
         100 - 110 is knoppen
         200 - 210 is numpad
         */
-        const waarde = Number(value);
+        waarde = Number(value);
         console.log(waarde)
-        if (waarde != NaN && waarde >= 100 && waarde < 200) {
-          changePageTo(waarde);
-        }else if (waarde >= 200) {
-          if (currentPagina == PINinvoer) {
-            setPin(waarde);
-          }else if (currentPagina == bedragKeuze) {
-            setBedrag(waarde);
-          }
+        if (waarde != NaN) {
+          HandleSerialInput();
         }
+        
 
 
         //----------------------------------------------
