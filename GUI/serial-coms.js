@@ -2,12 +2,13 @@ let timer;
 
 let waarde;
 
-let availible = true;
+let availilieble = true;
 
 
 function HandleSerialInput() {
   if (waarde != NaN && waarde >= 100 && waarde < 112) {
-    if (availible) {
+    if (availilieble) {
+      availilieble = false;
       changePageTo(waarde);
     }
   }else if (waarde >= 200 && waarde < 212) {
@@ -17,6 +18,12 @@ function HandleSerialInput() {
       setBedrag(waarde);
     }
   }
+
+  // if (!availible) {
+  //   setTimeout(function() {
+  //     availible = true;
+  // }, 2000);
+  // }
 }
 
 document.getElementById('connectButton').addEventListener('click', async () => {

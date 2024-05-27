@@ -72,10 +72,10 @@ function setPage(page){
     loadingScreen.classList.add('wipe-effect');
     setTimeout(function() {
         loadingScreen.classList.remove('wipe-effect');
+        availilieble = true;
     }, 2000);
     currentPagina = page;
     setTimeout(() => {mainImage.src = currentPagina.image},900);
-
 }
 
 function changePageTo(option) {
@@ -240,6 +240,14 @@ function changePageTo(option) {
             setTimeout(() => {document.getElementById("wip").style.opacity = "1"},900);
         } else {
             setTimeout(() => {document.getElementById("wip").style.opacity = "0"},900);
+        }
+
+        if (currentPagina != PINinvoer) {
+            pin = "";
+        }
+
+        if (currentPagina != bedragKeuze) {
+            bedragKeuze = "";
         }
 
         if (currentPagina == einde) {
