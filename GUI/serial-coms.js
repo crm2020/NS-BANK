@@ -10,6 +10,9 @@ function HandleSerialInput() {
     if (availilieble) {
       availilieble = false;
       changePageTo(waarde);
+        setTimeout(function() {
+          availible = true;
+      }, 2000);
     }
   }else if (waarde >= 200 && waarde < 212) {
     if (currentPagina == PINinvoer) {
@@ -19,11 +22,7 @@ function HandleSerialInput() {
     }
   }
 
-  // if (!availible) {
-  //   setTimeout(function() {
-  //     availible = true;
-  // }, 2000);
-  // }
+
 }
 
 document.getElementById('connectButton').addEventListener('click', async () => {
