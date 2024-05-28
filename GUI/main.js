@@ -3,6 +3,7 @@ let currentPagina = null;
 let ondertitel = document.getElementById('textbox');
 let GekozenBedrag = "";
 let pin = "";
+let pogingen = 0;
 
 const MAX_BEDRAG = 200;
 const TE_PINNEN_BEDRAGEN = [10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200];
@@ -11,34 +12,49 @@ const back = 103;
 const ok = 106;
 
 class Pagina {
-    constructor(name, image, TitelPagina, linksTo, prevPagina) {
+    constructor(name, image, TitelPagina) {
         this.name = name;
         this.image = image;
         this.TitelPagina = TitelPagina;
     }
 }
 
-let einde =           new Pagina("einde", 'GUI\\einde.png', true);
-let snelPinnen =      new Pagina("snelPinnen", 'GUI\\snel-pinnen.png', true);
-let ongeldigBedrag =  new Pagina("ongeldigBedrag", 'GUI\\ongeldig-bedrag.png', true);
-let biljetKeuze =     new Pagina("biljetKeuze", 'GUI\\biljet-keuze-menu.png', false); //-
-let bedragKeuze =     new Pagina("bedragKeuze", 'GUI\\bedrag-keuze.png', true);
-let geldOpnemen =     new Pagina("geldOpnemen", 'GUI\\geld-opnemen-menu.png', false);//- "ok" keuze is bedrag keuze
-let saldo =           new Pagina("saldo", 'GUI\\saldo-pagina.png', true);
-let taal =            new Pagina("taal", 'GUI\\taal-keuze.png', false); //-
-let hoofdMenu =       new Pagina("hoofdMenu", 'GUI\\hoofd-menu.png', false);//-
-let PINinvoer =       new Pagina("PINinvoer", 'GUI\\inlog-pagina.png', true);
-let start =           new Pagina("start", 'GUI\\welkom-pagina.png', true);
+const einde =           new Pagina("einde", 'GUI\\einde.png', true);
+const bonKeuze =        new Pagina("bon-keuze", 'GUI\\bon-keuze.png', true)
+const snelPinnen =      new Pagina("snelPinnen", 'GUI\\snel-pinnen.png', true);
+const ongeldigBedrag =  new Pagina("ongeldigBedrag", 'GUI\\ongeldig-bedrag.png', true);
+const biljetKeuze =     new Pagina("biljetKeuze", 'GUI\\biljet-keuze-menu.png', false); //-
+const bedragKeuze =     new Pagina("bedragKeuze", 'GUI\\bedrag-keuze.png', true);
+const geldOpnemen =     new Pagina("geldOpnemen", 'GUI\\geld-opnemen-menu.png', false);//- "ok" keuze is bedrag keuze
+const saldo =           new Pagina("saldo", 'GUI\\saldo-pagina.png', true);
+const taal =            new Pagina("taal", 'GUI\\taal-keuze.png', false); //-
+const hoofdMenu =       new Pagina("hoofdMenu", 'GUI\\hoofd-menu.png', false);//-
+const PINinvoer =       new Pagina("PINinvoer", 'GUI\\inlog-pagina.png', true);
+const start =           new Pagina("start", 'GUI\\welkom-pagina.png', true);
 
 currentPagina = start;
 mainImage.src = currentPagina.image;
 ondertitel.style.opacity = 0;
 
+function clearSubtitle(value) {
+    switch (value) {
+        case "pin":
+            pin = "";
+            ondertitel.setAttribute('value', '');
+            break;
+        case "GekozenBedrag":
+            GekozenBedrag = "";
+            ondertitel.setAttribute('value', '');
+        default:
+            ondertitel.setAttribute('value', '');
+            break;
+    }
+}
 
 function setPin(n){
     n = n%200;
     if (n == 10) {
-        pin = "";
+        clearSubtitle("pin")
     }else if (n == 11) {
         changePageTo(ok);
     }else{
@@ -79,9 +95,6 @@ function setPage(page){
 }
 
 function changePageTo(option) {
-        console.log('Received data:', option);
-
-
         if (currentPagina == start){
             setPage(PINinvoer);
         }else if (option == back) {
@@ -105,6 +118,7 @@ function changePageTo(option) {
                     setPage(geldOpnemen);
                     break;
                 case biljetKeuze:
+                    //voeg biljetkeuze toe
                     setPage(bedragKeuze);
                     break;
                 case ongeldigBedrag:
@@ -113,7 +127,9 @@ function changePageTo(option) {
                 case snelPinnen:
                     setPage(hoofdMenu);
                     break;
-
+                case bonKeuze:
+                    //bon printer NIET activeren
+                    setPage(einde);
                 default:
                     break;
             }
@@ -124,7 +140,12 @@ function changePageTo(option) {
                     if (pin.length == 4 || pinCorrect) {
                         setPage(hoofdMenu);
                         setPin(210);
-                    }else{
+                    }else if (pogingen == 2) {
+                        setPage(start);
+                        setPin(210);
+                        pogingen = 0;
+                    } else {
+                        pogingen++;
                         setPin(210);
                         document.getElementById("textbox").style.backgroundColor = "#ff0000";
                         setTimeout(() => {
@@ -140,19 +161,20 @@ function changePageTo(option) {
                     break;
                 case bedragKeuze:
                     if (!TE_PINNEN_BEDRAGEN.includes(parseInt(GekozenBedrag))) {
-                        document.getElementById("textbox").style.backgroundColor = "#ff0000";
-                        setTimeout(() => {
-                            document.getElementById("textbox").style.backgroundColor = "#AEAEAE";
-                        }, 100);
+                        setPage(ongeldigBedrag);
                     }else{
                         setPage(biljetKeuze);
                     }
                     break;
                 case snelPinnen:
-                    setPage(einde);
+                    //check saldo bij database
+                    setPage(bonKeuze);
                     break;
                 case hoofdMenu:
                     setPage(snelPinnen);
+                case bonKeuze:
+                    //bon printer activeren
+                    setPage(einde);
                 default:
                     break;
             }
@@ -165,8 +187,9 @@ function changePageTo(option) {
                     //todo
                     break;
                 case geldOpnemen:
-                    GekozenBedrag = 10;
-                    setPage(einde);
+                    // check saldo bij database
+                    GekozenBedrag = "10";
+                    setPage(bonKeuze);
                     break;
                 case biljetKeuze:
                     //niks
@@ -183,8 +206,9 @@ function changePageTo(option) {
                     //todo
                     break;
                 case geldOpnemen:
-                    GekozenBedrag = 10;
-                    setPage(einde);
+                    // check saldo bij database
+                    GekozenBedrag = "50";
+                    setPage(bonKeuze);
                     break;
                 case biljetKeuze:
                     //niks
@@ -195,14 +219,16 @@ function changePageTo(option) {
         }else if (option == 104){
             switch (currentPagina) {
                 case hoofdMenu:
+                    // check saldo bij database
                     setPage(saldo);
                     break;
                 case taal:
                     //todo
                     break;
                 case geldOpnemen:
-                    GekozenBedrag = 20;
-                    setPage(einde);
+                    // check saldo bij database
+                    GekozenBedrag = "20";
+                    setPage(bonKeuze);
                     break;
                 case biljetKeuze:
                     //biljet keuze toevoegen
@@ -230,7 +256,7 @@ function changePageTo(option) {
         }
 
 
-        if (currentPagina == PINinvoer || currentPagina == bedragKeuze) {
+        if (currentPagina == PINinvoer || currentPagina == bedragKeuze || currentPagina == bonKeuze) {
             setTimeout(() => {ondertitel.style.opacity = 1;}, 900);
         }else{
             setTimeout(() => {ondertitel.style.opacity = 0;}, 900);
@@ -243,11 +269,11 @@ function changePageTo(option) {
         }
 
         if (currentPagina != PINinvoer) {
-            pin = "";
+            setPin(210);
         }
 
-        if (currentPagina != bedragKeuze) {
-            bedragKeuze = "";
+        if (currentPagina != bedragKeuze && currentPagina != bonKeuze) {
+            clearSubtitle("GekozenBedrag");
         }
 
         if (currentPagina == einde) {

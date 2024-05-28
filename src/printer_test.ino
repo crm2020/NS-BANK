@@ -23,7 +23,7 @@ Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
 
 
 String location = "Wijnhaven Rotterdam";
-String date = "10/04/2024";
+String date = "30/05/2024";
 String time = "12:05";
 int transID = 12902;
 String IBAN = "###########093";
