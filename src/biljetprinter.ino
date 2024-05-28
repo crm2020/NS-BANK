@@ -12,7 +12,7 @@ int IRSens[3] = {36, 35, 34};
 
 int geld[3] = {4, 6, 1}; // 10, 20, 50
 
-void bakjeIn() {
+void bakjeIn() {  // Misschien als pinpas eruit wordt gehaald
   analogWrite(bakjeMotor[0], 0);
   analogWrite(bakjeMotor[1], 0);
 }
