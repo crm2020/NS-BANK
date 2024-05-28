@@ -48,15 +48,19 @@ void loop() {
         Serial.write(key-'0'+200);
     }
 
+    int button = 0;
     for (int b:buttons) {
         if (!digitalRead(b)){
-            Serial.write(b-7+100);
+            button = b;
         }
     }
+    if (button) {
+        Serial.write(button-7+100);
+    }
 
-    i *= 2;
-    Serial.write(300);
-
-    Serial.write('A');
+//    i *= 2;
+//    Serial.write(300);
+//
+//    Serial.write('A');
     delay(100);
 }
