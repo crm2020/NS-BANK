@@ -52,7 +52,7 @@ document.getElementById('connectButton').addEventListener('click', async () => {
         /*
         IBAN is tussen 48 en 90
         100 - 110 is knoppen
-        200 - 210 is numpad
+        200 - 212 is numpad
         */
         waarde = Number(value);
         console.log(waarde)

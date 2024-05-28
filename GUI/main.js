@@ -36,17 +36,21 @@ currentPagina = start;
 mainImage.src = currentPagina.image;
 ondertitel.style.opacity = 0;
 
+function setOndertitel(value) {
+    ondertitel.setAttribute('value', value);
+}
+
 function clearSubtitle(value) {
     switch (value) {
         case "pin":
             pin = "";
-            ondertitel.setAttribute('value', '');
+            setOndertitel(pin);
             break;
         case "GekozenBedrag":
             GekozenBedrag = "";
-            ondertitel.setAttribute('value', '');
+            setOndertitel(GekozenBedrag);
         default:
-            ondertitel.setAttribute('value', '');
+            setOndertitel('');
             break;
     }
 }
@@ -54,7 +58,7 @@ function clearSubtitle(value) {
 function setPin(n){
     n = n%200;
     if (n == 10) {
-        clearSubtitle("pin")
+        clearSubtitle("pin");
     }else if (n == 11) {
         changePageTo(ok);
     }else{
@@ -64,7 +68,7 @@ function setPin(n){
 
         }
     }
-    ondertitel.setAttribute('value', pin.replace(/./g, '*'));
+    setOndertitel(pin.replace(/./g, '*'));
 }
 
 function setBedrag(n) {
@@ -74,13 +78,12 @@ function setBedrag(n) {
     }else if (n == 11) {
         changePageTo(ok);
     }else{
+        GekozenBedrag += n.toString();   
         if (parseInt(GekozenBedrag) > 200) {
             GekozenBedrag = "200";
-        }else{
-            GekozenBedrag += n.toString();   
         }
     }
-    ondertitel.setAttribute('value', GekozenBedrag);
+    setOndertitel(GekozenBedrag);
 }
 
 function setPage(page){
@@ -188,7 +191,8 @@ function changePageTo(option) {
                     break;
                 case geldOpnemen:
                     // check saldo bij database
-                    GekozenBedrag = "10";
+                    GekozenBedrag = '10';
+                    setOndertitel(GekozenBedrag);
                     setPage(bonKeuze);
                     break;
                 case biljetKeuze:
@@ -207,7 +211,8 @@ function changePageTo(option) {
                     break;
                 case geldOpnemen:
                     // check saldo bij database
-                    GekozenBedrag = "50";
+                    GekozenBedrag = '50';
+                    setOndertitel(GekozenBedrag);
                     setPage(bonKeuze);
                     break;
                 case biljetKeuze:
@@ -227,7 +232,8 @@ function changePageTo(option) {
                     break;
                 case geldOpnemen:
                     // check saldo bij database
-                    GekozenBedrag = "20";
+                    GekozenBedrag = '20';
+                    setOndertitel(GekozenBedrag);
                     setPage(bonKeuze);
                     break;
                 case biljetKeuze:
@@ -269,7 +275,7 @@ function changePageTo(option) {
         }
 
         if (currentPagina != PINinvoer) {
-            setPin(210);
+            pin = '';
         }
 
         if (currentPagina != bedragKeuze && currentPagina != bonKeuze) {
