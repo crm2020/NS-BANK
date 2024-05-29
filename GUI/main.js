@@ -1,6 +1,9 @@
 const mainImage = document.getElementById('mainImage');
 let currentPagina = null;
-let ondertitel = document.getElementById('textbox');
+let ondertitel = document.getElementById('ondertitelVeld');
+let keuze_1 = document.getElementById('keuze-1');
+let keuze_2 = document.getElementById('keuze-2');
+let keuze_3 = document.getElementById('keuze-3');
 let GekozenBedrag = "";
 let pin = "";
 let pogingen = 0;
@@ -35,6 +38,9 @@ const start =           new Pagina("start", 'GUI\\welkom-pagina.png', true);
 currentPagina = start;
 mainImage.src = currentPagina.image;
 ondertitel.style.opacity = 0;
+keuze_1.style.opacity = 0;
+keuze_2.style.opacity = 0;
+keuze_3.style.opacity = 0;
 
 function checkIBAN() {
     //check bij database
@@ -112,7 +118,7 @@ function setPage(page){
     currentPagina = page;
     setTimeout(() => {mainImage.src = currentPagina.image},900);
 
-    if (currentPagina == PINinvoer || currentPagina == bedragKeuze || currentPagina == bonKeuze) {
+    if (currentPagina == PINinvoer || currentPagina == bedragKeuze || currentPagina == bonKeuze || currentPagina == saldo) {
         setTimeout(() => {ondertitel.style.opacity = 1;}, 900);
     }else{
         setTimeout(() => {ondertitel.style.opacity = 0;}, 900);
@@ -128,7 +134,43 @@ function setPage(page){
         pin = '';
     }
 
-    if (currentPagina != bedragKeuze && currentPagina != bonKeuze) {
+    if (currentPagina == saldo) {
+        setOndertitel('te veel') //check bij database
+    }
+
+    if (currentPagina == biljetKeuze) {
+        setTimeout(() => {keuze_1.style.opacity = 1;}, 900);
+        setTimeout(() => {keuze_2.style.opacity = 1;}, 900);
+        setTimeout(() => {keuze_3.style.opacity = 1;}, 900);
+        
+        let keuze1 = document.getElementById("keuze1");
+        let keuze2 = document.getElementById("keuze2");
+        let keuze3 = document.getElementById("keuze3");
+
+
+        let bedrag = parseInt(GekozenBedrag);
+        let vijftig = Math.trunc(bedrag/50);
+        let twintig;
+        let tien;
+
+        if (bedrag-(50*vijftig) > 0) {
+            twintig = Math.trunc((bedrag-(50*vijftig))/20);
+            if (bedrag-(50*vijftig)-(20*twintig) > 0) {
+                tien = (bedrag-(vijftig*50)-(20*twintig))/10;
+            }
+        }else{
+            keuze1.setAttribute('value', String(vijftig)+ ' x 50')
+        }
+        
+        document.getElementById("keuze1").setAttribute('value', String(vijftig)+' x 50');
+
+    }else{
+        setTimeout(() => {keuze_1.style.opacity = 0;}, 900);
+        setTimeout(() => {keuze_2.style.opacity = 0;}, 900);
+        setTimeout(() => {keuze_3.style.opacity = 0;}, 900);
+    }
+
+    if (currentPagina != bedragKeuze && currentPagina != bonKeuze && currentPagina != saldo) {
         clearSubtitle("GekozenBedrag");
     }
 
@@ -192,9 +234,9 @@ function changePageTo(option) {
                     } else {
                         pogingen++;
                         setPin(210);
-                        document.getElementById("textbox").style.backgroundColor = "#ff0000";
+                        ondertitel.style.backgroundColor = "#ff0000";
                         setTimeout(() => {
-                            document.getElementById("textbox").style.backgroundColor = "#AEAEAE";
+                            ondertitel.style.backgroundColor = "#AEAEAE";
                         }, 100);
                     }
                     break;
@@ -302,7 +344,4 @@ function changePageTo(option) {
                     break;
             }
         }
-
-
-
 }

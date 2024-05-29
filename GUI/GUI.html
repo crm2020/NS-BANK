@@ -23,14 +23,32 @@
         .container {
             position: relative;
         }
-        .textbox-container {
+        #ondertitel {
             position: absolute;
             top: 57%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        #textbox {
-            width: 800px;
+        #keuze-1 {
+            position: absolute;
+            top: 30%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+        #keuze-2 {
+            position: absolute;
+            top: 53%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+        #keuze-3 {
+            position: absolute;
+            top: 76%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+        input {
+            width: 500px;
             padding: 10px;
             font-size: 45px;
             text-align: center;
@@ -97,8 +115,17 @@
     <div class="image-container">
         <img src="GUI\welkom-pagina.png" id="mainImage" alt="welkom-pagina">
     </div>
-    <div class="textbox-container">
-        <input type="text" id="textbox" value="____">
+    <div class="textbox-container" id="ondertitel">
+        <input type="text" id="ondertitelVeld" value="____">
+    </div>
+    <div class="textbox-container" id="keuze-1">
+        <input type="text" id="keuze1" value="">
+    </div>
+    <div class="textbox-container" id="keuze-2">
+        <input type="text" id="keuze2" value="">
+    </div>
+    <div class="textbox-container" id="keuze-3">
+        <input type="text" id="keuze3" value="">
     </div>
     <script src="main.js"></script>
     <script src="serial-coms.js"></script>

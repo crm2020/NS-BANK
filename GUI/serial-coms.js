@@ -70,7 +70,7 @@ document.getElementById('connectButton').addEventListener('click', async () => {
             console.log(waarde);
             setPage(start);
           }
-          if (element != 10 && element != 24 && element < 99) {
+          if (element >47 && element < 99) {
             collectingIBAN += String.fromCharCode(element);
           }
         });
