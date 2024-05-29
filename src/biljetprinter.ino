@@ -1,26 +1,32 @@
 #define LENGTH 3
 
-int bakjeMotor[2] = {11, 12};
+int bakjeMotor[2] = {6, 7};
 
 int inputs[3][2] = {
-  {46, 47},
-  {44, 45},
-  {42, 43}
+  {12, 13},
+  {10, 11},
+  {8, 9}
 };
 
-int IRSens[3] = {36, 35, 34};
+int IRSens = 2;
 
 int geld[3] = {4, 6, 1}; // 10, 20, 50
 
-void bakjeIn() {  // Misschien als pinpas eruit wordt gehaald
+void bakjeIn() {
+  analogWrite(bakjeMotor[0], 200);
+  analogWrite(bakjeMotor[1], 0);
+  delay(2000);  // check timing
   analogWrite(bakjeMotor[0], 0);
   analogWrite(bakjeMotor[1], 0);
 }
 
 void bakjeUit() {
-  analogWrite(bakjeMotor[0], 200);
+  analogWrite(bakjeMotor[0], 0);
   analogWrite(bakjeMotor[1], 200);
-  delay(10000);
+  delay(1500);  // check timing
+  analogWrite(bakjeMotor[0], 0);
+  analogWrite(bakjeMotor[1], 0);
+  delay(20000);
   bakjeIn();
 }
 
@@ -43,14 +49,14 @@ void printGeld() {
   for (int j = 0; j < LENGTH; j++) {
     while (geld[j] > 0) {
       draai(j);
-      while (digitalRead(IRSens[j]) == 1) {}  // Als IR sensor niks ziet, wacht
+      while (digitalRead(IRSens) == 1) {}  // Als IR sensor niks ziet, wacht
       geld[j]--;
       stop();
       delay(500);
     }
   }
-  delay(1000);
-  //bakjeUit();
+  delay(2000);
+  bakjeUit();
 }
 
 void setup() {
@@ -60,8 +66,8 @@ void setup() {
   for (int i = 0; i < LENGTH; i++) {
     pinMode(inputs[i][0], OUTPUT);
     pinMode(inputs[i][1], OUTPUT);
-    pinMode(IRSens[i], INPUT);
   }
+  pinMode(IRSens, INPUT);
   pinMode(bakjeMotor[0], OUTPUT);
   pinMode(bakjeMotor[1], OUTPUT);
 
