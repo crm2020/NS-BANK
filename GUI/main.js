@@ -319,6 +319,8 @@ function changePageTo(option) {
                 case bonKeuze:
                     //bon printer NIET activeren
                     setPage(einde);
+                case OnvoldoendeSaldo:
+                    setPage(hoofdMenu);
                 default:
                     break;
             }
