@@ -22,6 +22,8 @@ int buttons[6] = {
 };
 
 String IBAN = "";
+bool IBANwegGehaald = false;
+bool IBANgestuurd = false;
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance
 
 
@@ -33,10 +35,9 @@ char keys[rows][cols] = {
         {'7', '8', '9'},
         {':', '0', ';'}
 };
-byte rowPins[rows] = {1, 2, 3, 4};
-byte colPins[cols] = {5, 6, 7};
+byte rowPins[rows] = {13, 12, 11, 10};
+byte colPins[cols] = {9, 8, 7};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
-
 
 void checkCard(){
   byte bufferATQA[2];
@@ -56,6 +57,9 @@ void checkCard(){
       mfrc522.PCD_StopCrypto1();
     }
   }else{
+    if (IBAN != ""){
+      IBANwegGehaald = true;
+    }
     IBAN = "";
   }
 }
@@ -68,20 +72,20 @@ bool readBlock(byte block, MFRC522::MIFARE_Key &key, String &data) {
   // Authenticate with the block
   status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &key, &(mfrc522.uid));
   if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("Authentication failed for block "));
-    Serial.print(block);
-    Serial.print(F(": "));
-    Serial.println(mfrc522.GetStatusCodeName(status));
+    // Serial.print(F("Authentication failed for block "));
+    // Serial.print(block);
+    // Serial.print(F(": "));
+    // Serial.println(mfrc522.GetStatusCodeName(status));
     // return false;
   }
 
   // Read data from the block
   status = mfrc522.MIFARE_Read(block, buffer, &len);
   if (status != MFRC522::STATUS_OK) {
-    Serial.print(F("Reading failed for block "));
-    Serial.print(block);
-    Serial.print(F(": "));
-    Serial.println(mfrc522.GetStatusCodeName(status));
+    // Serial.print(F("Reading failed for block "));
+    // Serial.print(block);
+    // Serial.print(F(": "));
+    // Serial.println(mfrc522.GetStatusCodeName(status));
     // return false;
   }
 
@@ -107,22 +111,44 @@ void setup() {
 }
 
 void loop() {
-  // checkCard();
+  checkCard();
+  bool knopIngedruktOfKeypad = false;
   // Serial.print(F("IBAN: "));
-  // Serial.println(IBAN);
+
+  
+  // else{
+  //   Serial.write(24);
+  // }
+
+  // keypad =========
   char key = keypad.getKey();
   if (key){
     Serial.write(key-'0'+200);
+    knopIngedruktOfKeypad = true;
   }
 
+  //knoppen ==============
   int button = 0;
-  for (int b:buttons) {
-    if (!digitalRead(b)){
-      button = b;
+  for (int i = 0; i < 6; i++) {
+    if (!digitalRead(buttons[i])){
+      Serial.write(i+100+1);
+      knopIngedruktOfKeypad = true;
+      break;
     }
   }
-  if (button) {
-    Serial.write(button-7+100);
+
+  //kaartlezer ============
+  if (IBAN != "" && !knopIngedruktOfKeypad && !IBANgestuurd){
+    for(char c: IBAN){
+      Serial.write(c);
+    }
+    Serial.write('\n');
+    IBANgestuurd = true;
+  }
+  if(IBANwegGehaald){
+    IBANgestuurd = false;
+    IBANwegGehaald = false;
+    Serial.write(24);
   }
   delay(100);
 }

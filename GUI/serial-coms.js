@@ -60,13 +60,17 @@ document.getElementById('connectButton').addEventListener('click', async () => {
         */
         // console.log(value);
         waarde = Number(value);
-        if (waarde != NaN && waarde > 99) {
+        if (waarde != NaN && waarde > 99 && waarde < 213) {
           console.log(waarde)
           HandleSerialInput();
         }
         value.forEach(element => {
           // console.log(String.fromCharCode(element));
-          if (element != 10 && element < 99) {
+          if (element == 24) {
+            console.log(waarde);
+            setPage(start);
+          }
+          if (element != 10 && element != 24 && element < 99) {
             collectingIBAN += String.fromCharCode(element);
           }
         });

@@ -38,7 +38,11 @@ ondertitel.style.opacity = 0;
 
 function checkIBAN() {
     //check bij database
-    IBANcorrect = true;
+    IBANcorrect = false;
+    if (IBAN.length == 18) {
+        IBANcorrect = true; 
+    }
+
     if (IBANcorrect) {
         if (currentPagina == start) {
             setPage(PINinvoer);
@@ -222,7 +226,7 @@ function changePageTo(option) {
         }else if (option == 101){
             switch (currentPagina) {
                 case hoofdMenu:
-                    setPage(taal);
+                    // setPage(taal);
                     break;
                 case taal:
                     //todo
