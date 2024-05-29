@@ -37,6 +37,17 @@ class Pagina {
     }
 }
 
+let con = mysql.createConnection({
+    host: "145.24.223.91",
+    user: "root",
+    password: "games123"
+});
+
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
+
 const einde =           new Pagina("einde", 'GUI\\einde.png', true);
 const bonKeuze =        new Pagina("bon-keuze", 'GUI\\bon-keuze.png', true)
 const snelPinnen =      new Pagina("snelPinnen", 'GUI\\snel-pinnen.png', true);
@@ -58,7 +69,25 @@ keuze_2.style.opacity = 0;
 keuze_3.style.opacity = 0;
 
 function checkIBAN() {
-    //check bij database
+    try{
+        let sqlcheck = 'SELECT IBAN FROM banking';
+        con.query(sqlcheck,function (err, result) {
+            if (result == IBAN){
+                IBANcorrect = true;
+            }
+            if(result !== IBAN){
+                IBANcorrect = false;
+            }
+
+        });
+    }
+
+    catch (err) {
+        console.log(err);
+        console.log("error locating table");
+        return 0;
+    }
+
     IBANcorrect = false;
     if (IBAN.length == 18) {
         IBANcorrect = true; 
@@ -147,6 +176,25 @@ function setPage(page){
 
     if (currentPagina != PINinvoer) {
         pin = '';
+    }
+
+    try{
+        let sqlcheck = 'SELECT Balance FROM Account';
+        con.query(sqlcheck,function (err, result) {
+            if (result == saldo){
+                IBANcorrect = true;
+            }
+            if(result !== saldo){
+                IBANcorrect = false;
+            }
+
+        });
+    }
+
+    catch (err) {
+        console.log(err);
+        console.log("error");
+        return 0;
     }
 
     if (currentPagina == saldo) {
