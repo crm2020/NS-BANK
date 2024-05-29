@@ -37,16 +37,16 @@ class Pagina {
     }
 }
 
-let con = mysql.createConnection({
-    host: "145.24.223.91",
-    user: "root",
-    password: "games123"
-});
+// let con = mysql.createConnection({
+//     host: "145.24.223.91",
+//     user: "root",
+//     password: "games123"
+// });
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
+// con.connect(function(err) {
+//     if (err) throw err;
+//     console.log("Connected!");
+// });
 
 const einde =           new Pagina("einde", 'GUI\\einde.png', true);
 const bonKeuze =        new Pagina("bon-keuze", 'GUI\\bon-keuze.png', true)
@@ -56,6 +56,7 @@ const biljetKeuze =     new Pagina("biljetKeuze", 'GUI\\biljet-keuze-menu.png', 
 const bedragKeuze =     new Pagina("bedragKeuze", 'GUI\\bedrag-keuze.png', true);
 const geldOpnemen =     new Pagina("geldOpnemen", 'GUI\\geld-opnemen-menu.png', false);//- "ok" keuze is bedrag keuze
 const saldo =           new Pagina("saldo", 'GUI\\saldo-pagina.png', true);
+const OnvoldoendeSaldo =new Pagina("OnvoldoendeSaldo", 'GUI\\te-weinig-saldo.png', true);
 const taal =            new Pagina("taal", 'GUI\\taal-keuze.png', false); //-
 const hoofdMenu =       new Pagina("hoofdMenu", 'GUI\\hoofd-menu.png', false);//-
 const PINinvoer =       new Pagina("PINinvoer", 'GUI\\inlog-pagina.png', true);
@@ -71,7 +72,7 @@ keuze_3.style.opacity = 0;
 function checkIBAN() {
     try{
         let sqlcheck = 'SELECT IBAN FROM banking';
-        con.query(sqlcheck,function (err, result) {
+        con.query(sqlcheck,function (_err, result) {
             if (result == IBAN){
                 IBANcorrect = true;
             }
@@ -85,7 +86,7 @@ function checkIBAN() {
     catch (err) {
         console.log(err);
         console.log("error locating table");
-        return 0;
+        // return 0;
     }
 
     IBANcorrect = false;
@@ -100,6 +101,11 @@ function checkIBAN() {
     }else{
         setPage(einde);
     }
+}
+
+function checkSaldo(_amount) {
+    return true;
+    //check bij database
 }
 
 function setOndertitel(value) {
@@ -178,26 +184,26 @@ function setPage(page){
         pin = '';
     }
 
-    try{
-        let sqlcheck = 'SELECT Balance FROM Account';
-        con.query(sqlcheck,function (err, result) {
-            if (result == saldo){
-                IBANcorrect = true;
-            }
-            if(result !== saldo){
-                IBANcorrect = false;
-            }
-
-        });
-    }
-
-    catch (err) {
-        console.log(err);
-        console.log("error");
-        return 0;
-    }
-
+    
     if (currentPagina == saldo) {
+        // try{
+        //     let sqlcheck = 'SELECT Balance FROM Account';
+        //     con.query(sqlcheck,function (err, result) {
+        //         if (result == saldo){
+        //             IBANcorrect = true;
+        //         }
+        //         if(result !== saldo){
+        //             IBANcorrect = false;
+        //         }
+    
+        //     });
+        // }
+    
+        // catch (err) {
+        //     console.log(err);
+        //     console.log("error");
+        //     return 0;
+        // }
         setOndertitel('te veel') //check bij database
     }
 
@@ -302,7 +308,6 @@ function changePageTo(option) {
                     setPage(geldOpnemen);
                     break;
                 case biljetKeuze:
-                    //voeg biljetkeuze toe
                     setPage(bedragKeuze);
                     break;
                 case ongeldigBedrag:
@@ -351,33 +356,34 @@ function changePageTo(option) {
                     }
                     break;
                 case snelPinnen:
-                    //check saldo bij database
-                    setPage(bonKeuze);
+                    if (checkSaldo(70)) {
+                        setPage(bonKeuze);
+                    }else{
+                        setPage(OnvoldoendeSaldo);
+                    }
                     break;
                 case hoofdMenu:
                     setPage(snelPinnen);
                 case bonKeuze:
                     //bon printer activeren
                     setPage(einde);
+                    break;
+                case biljetKeuze:
+                    //biljet keuze toevoegen
+                    break;
                 default:
                     break;
             }
         }else if (option == 101){
             switch (currentPagina) {
-                case hoofdMenu:
-                    // setPage(taal);
-                    break;
-                case taal:
-                    //todo
-                    break;
                 case geldOpnemen:
-                    // check saldo bij database
                     GekozenBedrag = '10';
                     setOndertitel(GekozenBedrag);
-                    setPage(bonKeuze);
-                    break;
-                case biljetKeuze:
-                    //niks
+                    if (checkSaldo(10)) {
+                        setPage(bonKeuze);
+                    }else{
+                        setPage(OnvoldoendeSaldo);
+                    }
                     break;
                 default:
                     break;
@@ -387,17 +393,14 @@ function changePageTo(option) {
             switch (currentPagina) {
                 case hoofdMenu:
                     break;
-                case taal:
-                    //todo
-                    break;
                 case geldOpnemen:
-                    // check saldo bij database
                     GekozenBedrag = '50';
                     setOndertitel(GekozenBedrag);
-                    setPage(bonKeuze);
-                    break;
-                case biljetKeuze:
-                    //niks
+                    if (checkSaldo(parseInt(GekozenBedrag))) {
+                        setPage(bonKeuze);
+                    }else{
+                        setPage(OnvoldoendeSaldo);
+                    }
                     break;
                 default:
                     break;
@@ -405,17 +408,14 @@ function changePageTo(option) {
         }else if (option == 104){
             switch (currentPagina) {
                 case hoofdMenu:
-                    // check saldo bij database
                     setPage(saldo);
                     break;
-                case taal:
-                    //todo
-                    break;
                 case geldOpnemen:
-                    // check saldo bij database
                     GekozenBedrag = '20';
                     setOndertitel(GekozenBedrag);
-                    setPage(bonKeuze);
+                    if (checkSaldo(parseInt(GekozenBedrag))) {
+                        setPage(bonKeuze);
+                    }
                     break;
                 case biljetKeuze:
                     //biljet keuze toevoegen
@@ -427,12 +427,6 @@ function changePageTo(option) {
             switch (currentPagina) {
                 case hoofdMenu:
                     setPage(geldOpnemen);
-                    break;
-                case taal:
-                    //todo
-                    break;
-                case geldOpnemen:
-                    //niks
                     break;
                 case biljetKeuze:
                     //biljet keuze toevoegen
