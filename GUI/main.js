@@ -36,6 +36,18 @@ currentPagina = start;
 mainImage.src = currentPagina.image;
 ondertitel.style.opacity = 0;
 
+function checkIBAN() {
+    //check bij database
+    IBANcorrect = true;
+    if (IBANcorrect) {
+        if (currentPagina == start) {
+            setPage(PINinvoer);
+        }
+    }else{
+        setPage(einde);
+    }
+}
+
 function setOndertitel(value) {
     ondertitel.setAttribute('value', value);
 }
@@ -95,12 +107,38 @@ function setPage(page){
     }, 2000);
     currentPagina = page;
     setTimeout(() => {mainImage.src = currentPagina.image},900);
+
+    if (currentPagina == PINinvoer || currentPagina == bedragKeuze || currentPagina == bonKeuze) {
+        setTimeout(() => {ondertitel.style.opacity = 1;}, 900);
+    }else{
+        setTimeout(() => {ondertitel.style.opacity = 0;}, 900);
+    }
+    
+    if (currentPagina == taal){
+        setTimeout(() => {document.getElementById("wip").style.opacity = "1"},900);
+    } else {
+        setTimeout(() => {document.getElementById("wip").style.opacity = "0"},900);
+    }
+
+    if (currentPagina != PINinvoer) {
+        pin = '';
+    }
+
+    if (currentPagina != bedragKeuze && currentPagina != bonKeuze) {
+        clearSubtitle("GekozenBedrag");
+    }
+
+    if (currentPagina == einde) {
+        pin = "";
+        GekozenBedrag = "";
+        setTimeout(() => {
+            setPage(start)
+        }, 11000);
+    }
 }
 
 function changePageTo(option) {
-        if (currentPagina == start){
-            setPage(PINinvoer);
-        }else if (option == back) {
+        if (option == back) {
             switch (currentPagina) {
                 case PINinvoer:
                     setPage(start);
@@ -262,34 +300,5 @@ function changePageTo(option) {
         }
 
 
-        if (currentPagina == PINinvoer || currentPagina == bedragKeuze || currentPagina == bonKeuze) {
-            setTimeout(() => {ondertitel.style.opacity = 1;}, 900);
-        }else{
-            setTimeout(() => {ondertitel.style.opacity = 0;}, 900);
-        }
-        
-        if (currentPagina == taal){
-            setTimeout(() => {document.getElementById("wip").style.opacity = "1"},900);
-        } else {
-            setTimeout(() => {document.getElementById("wip").style.opacity = "0"},900);
-        }
 
-        if (currentPagina != PINinvoer) {
-            pin = '';
-        }
-
-        if (currentPagina != bedragKeuze && currentPagina != bonKeuze) {
-            clearSubtitle("GekozenBedrag");
-        }
-
-        if (currentPagina == einde) {
-            pin = "";
-            GekozenBedrag = "";
-            setTimeout(() => {
-                setPage(start)
-            }, 11000);
-        }
-
-        //debug
-        document.getElementById("titel").innerText = currentPagina.name;
 }

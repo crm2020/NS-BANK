@@ -1,4 +1,3 @@
-let timer;
 let waarde;
 let available = true;
 
@@ -75,6 +74,7 @@ document.getElementById('connectButton').addEventListener('click', async () => {
           IBAN = collectingIBAN;
           console.log(IBAN);
           collectingIBAN = "";
+          checkIBAN();
         }
 
 
