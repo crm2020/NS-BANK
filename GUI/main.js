@@ -91,7 +91,7 @@ function setPage(page){
     loadingScreen.classList.add('wipe-effect');
     setTimeout(function() {
         loadingScreen.classList.remove('wipe-effect');
-        availilieble = true;
+        available = true;
     }, 2000);
     currentPagina = page;
     setTimeout(() => {mainImage.src = currentPagina.image},900);

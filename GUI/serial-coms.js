@@ -1,24 +1,31 @@
 let timer;
 let waarde;
-let availilieble = true;
+let available = true;
+
+let collectingIBAN = "";
+let IBAN = "";
 
 let reader
 let writer
 
-let write;
 
+let write;
 function writeSerial(n) {
   write = n;
 }
 
+function makeAvailable() {
+  setTimeout(function() {
+    available = true;
+  }, 2000);
+}
+
 function HandleSerialInput() {
   if (waarde != NaN && waarde >= 100 && waarde < 112) {
-    if (availilieble) {
-      availilieble = false;
+    if (available) {
+      available = false;
       changePageTo(waarde);
-        setTimeout(function() {
-          availible = true;
-      }, 2000);
+      makeAvailable();
     }
   }else if (waarde >= 200 && waarde < 212) {
     if (currentPagina == PINinvoer) {
@@ -26,8 +33,6 @@ function HandleSerialInput() {
     }else if (currentPagina == bedragKeuze) {
       setBedrag(waarde);
     }
-  }else if (waarde == 255) {
-    console.log("Succes");
   }
 }
 
@@ -54,12 +59,23 @@ document.getElementById('connectButton').addEventListener('click', async () => {
         100 - 110 is knoppen
         200 - 212 is numpad
         */
+        // console.log(value);
         waarde = Number(value);
-        console.log(waarde)
-        if (waarde != NaN) {
+        if (waarde != NaN && waarde > 99) {
+          console.log(waarde)
           HandleSerialInput();
         }
-        
+        value.forEach(element => {
+          // console.log(String.fromCharCode(element));
+          if (element != 10 && element < 99) {
+            collectingIBAN += String.fromCharCode(element);
+          }
+        });
+        if (collectingIBAN.length == 18) {
+          IBAN = collectingIBAN;
+          console.log(IBAN);
+          collectingIBAN = "";
+        }
 
 
         //----------------------------------------------
