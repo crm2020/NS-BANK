@@ -163,6 +163,25 @@ function setPage(page){
         pin = '';
     }
 
+    try{
+        let sqlcheck = 'SELECT Balance FROM Account';
+        con.query(sqlcheck,function (err, result) {
+            if (result == saldo){
+                IBANcorrect = true;
+            }
+            if(result !== saldo){
+                IBANcorrect = false;
+            }
+
+        });
+    }
+
+    catch (err) {
+        console.log(err);
+        console.log("error");
+        return 0;
+    }
+
     if (currentPagina == saldo) {
         setOndertitel('te veel') //check bij database
     }
