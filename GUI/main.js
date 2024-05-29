@@ -7,6 +7,21 @@ let keuze_3 = document.getElementById('keuze-3');
 let GekozenBedrag = "";
 let pin = "";
 let pogingen = 0;
+let optie_1 ={            
+    "50" : 0,
+    "20" : 0,
+    "10" : 0
+};
+let optie_2 ={            
+    "50" : 0,
+    "20" : 0,
+    "10" : 0
+};
+let optie_3 ={            
+    "50" : 0,
+    "20" : 0,
+    "10" : 0
+};
 
 const MAX_BEDRAG = 200;
 const TE_PINNEN_BEDRAGEN = [10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200];
@@ -149,20 +164,54 @@ function setPage(page){
 
 
         let bedrag = parseInt(GekozenBedrag);
-        let vijftig = Math.trunc(bedrag/50);
+        let vijftig;
         let twintig;
         let tien;
+    
+        //keuze 1
+        vijftig = Math.trunc(bedrag/50);
+        twintig = Math.trunc((bedrag-(50*vijftig))/20);
+        tien = (bedrag-(vijftig*50)-(20*twintig))/10;
+        optieString = (vijftig) ? String(vijftig)+ ' x 50 ': "";
+        optieString += (twintig) ? String(twintig)+ ' x 20 ': "";
+        optieString += (tien) ? String(tien)+ ' x 10': "";
 
-        if (bedrag-(50*vijftig) > 0) {
-            twintig = Math.trunc((bedrag-(50*vijftig))/20);
-            if (bedrag-(50*vijftig)-(20*twintig) > 0) {
-                tien = (bedrag-(vijftig*50)-(20*twintig))/10;
-            }
-        }else{
-            keuze1.setAttribute('value', String(vijftig)+ ' x 50')
+        keuze1.setAttribute('value', optieString);
+        optie_1 = {
+            "50" : vijftig,
+            "20" : twintig,
+            "10" : tien
         }
         
-        document.getElementById("keuze1").setAttribute('value', String(vijftig)+' x 50');
+        //keuze 2
+        twintig = Math.trunc(bedrag/20);
+        tien = (bedrag-(20*twintig))/10;
+        optieString = (twintig) ? String(twintig)+ ' x 20 ': "";
+        optieString += (tien) ? String(tien)+ ' x 10': "";
+
+        keuze2.setAttribute('value', optieString);
+        optie_2 = {
+            "50" : 0,
+            "20" : twintig,
+            "10" : tien
+        }
+        
+        let tempBedrag = bedrag;
+
+        vijftig = Math.floor(bedrag/80);
+        twintig = Math.floor(bedrag/80+0.5);
+        tien = (bedrag-vijftig*50-twintig*20)/10;
+        optie_3 = {
+            "50" : vijftig,
+            "20" : twintig,
+            "10" : tien
+        }
+
+        optieString = (vijftig) ? String(vijftig)+ ' x 50 ': "";
+        optieString += (twintig) ? String(twintig)+ ' x 20 ': "";
+        optieString += (tien) ? String(tien)+ ' x 10': "";
+
+        keuze3.setAttribute('value', optieString);
 
     }else{
         setTimeout(() => {keuze_1.style.opacity = 0;}, 900);
