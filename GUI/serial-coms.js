@@ -8,9 +8,12 @@ let reader
 let writer
 
 
-let write;
-function writeSerial(n) {
-  write = n;
+async function writeSerial(n) {
+  try {
+    await writer.write(new Uint8Array([n]));
+  } catch (error) {
+    console.error('Error writing data:', error);
+  }
 }
 
 function makeAvailable() {
@@ -58,7 +61,7 @@ document.getElementById('connectButton').addEventListener('click', async () => {
         100 - 110 is knoppen
         200 - 212 is numpad
         */
-        // console.log(value);
+        console.log(value);
         waarde = Number(value);
         if (waarde != NaN && waarde > 99 && waarde < 213) {
           console.log(waarde)
@@ -86,17 +89,7 @@ document.getElementById('connectButton').addEventListener('click', async () => {
       } catch (err) {
         console.error('Error reading data:', err);
         break;
-      }
-
-      if (write) {
-        try {
-          await writer.write(new Uint8Array([write]));
-        } catch (err) {
-          console.error('Error reading data:', err);
-          break;
-        }
-        write = NaN;
-      }
+      }      
     }
   } catch (err) {
     console.error('Error opening serial port:', err);

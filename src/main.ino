@@ -2,8 +2,11 @@
 #include <Keypad.h>
 #include <SPI.h>
 #include <MFRC522.h>
+#include <Wire.h>
 #define SS_PIN 53  // MEGA: 53
 #define RST_PIN 48  // MEGA: 5
+
+#define slave 1
 
 #define button1 6
 #define button2 5
@@ -108,6 +111,7 @@ void setup() {
   for (int b: buttons) {
     pinMode(b, INPUT_PULLUP);
   }
+  Wire.begin();
 }
 
 void loop() {
@@ -150,5 +154,23 @@ void loop() {
     IBANwegGehaald = false;
     Serial.write(24);
   }
+
+  
+
+
+  int vijftig, twintig, tien;
+  if(Serial.read() == 1){
+    vijftig = Serial.read();
+    twintig = Serial.read();
+    tien = Serial.read();
+    Wire.beginTransmission(slave);
+    Wire.write(tien);
+    Wire.write(twintig);
+    Wire.write(vijftig);
+    Wire.endTransmission();
+    Serial.write(3);
+    
+  }
+
   delay(100);
 }

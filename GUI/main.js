@@ -204,7 +204,7 @@ function setPage(page){
         //     console.log("error");
         //     return 0;
         // }
-        setOndertitel('te veel') //check bij database
+        setOndertitel('1365') //check bij database
     }
 
     if (currentPagina == biljetKeuze) {
@@ -371,7 +371,11 @@ function changePageTo(option) {
                     setPage(einde);
                     break;
                 case biljetKeuze:
-                    //biljet keuze toevoegen
+                    writeSerial(1);
+                    writeSerial(optie_3["50"]);
+                    writeSerial(optie_3["20"]);
+                    writeSerial(optie_3["10"]);
+                    setPage(bonKeuze);
                     break;
                 default:
                     break;
@@ -420,7 +424,11 @@ function changePageTo(option) {
                     }
                     break;
                 case biljetKeuze:
-                    //biljet keuze toevoegen
+                    writeSerial(1);
+                    writeSerial(optie_1["50"]);
+                    writeSerial(optie_1["20"]);
+                    writeSerial(optie_1["10"]);
+                    setPage(bonKeuze);
                     break;
                 default:
                     break;
@@ -431,7 +439,11 @@ function changePageTo(option) {
                     setPage(geldOpnemen);
                     break;
                 case biljetKeuze:
-                    //biljet keuze toevoegen
+                    writeSerial(1);
+                    writeSerial(optie_2["50"]);
+                    writeSerial(optie_2["20"]);
+                    writeSerial(optie_2["10"]);
+                    setPage(bonKeuze);
                     break;
                 default:
                     break;
