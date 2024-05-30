@@ -1,3 +1,4 @@
+#include <Wire.h>
 #define LENGTH 3
 
 int bakjeMotor[2] = {6, 7};
@@ -59,9 +60,21 @@ void printGeld() {
   bakjeUit();
 }
 
+void krijgGeld() {
+  int j = 0;
+  while (Wire.available()) { // peripheral may send less than requested
+    int i = Wire.read(); // receive a byte as int
+    geld[j] = i;
+    j++;
+    Serial.print(j); Serial.print(": "); Serial.println(i);
+  }
+}
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  Wire.begin(1);  // join i2c bus with address 1
+  Wire.onReceive(krijgGeld);
 
   for (int i = 0; i < LENGTH; i++) {
     pinMode(inputs[i][0], OUTPUT);
