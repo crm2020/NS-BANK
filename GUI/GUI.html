@@ -1,11 +1,11 @@
 <html lang="en">
 <head>
-
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
+            overflow: hidden;
         }
         .image-container {
             width: 100%;
@@ -23,21 +23,39 @@
         .container {
             position: relative;
         }
-        .textbox-container {
+        #ondertitel {
             position: absolute;
             top: 57%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        #textbox {
-            width: 800px;
+        #keuze-1 {
+            position: absolute;
+            top: 30%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+        #keuze-2 {
+            position: absolute;
+            top: 53%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+        #keuze-3 {
+            position: absolute;
+            top: 76%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+        input {
+            width: 500px;
             padding: 10px;
             font-size: 45px;
             text-align: center;
             letter-spacing: 1px;
-            border: none;
             background-color: #AEAEAE;
-            color: black;
+            border: none;
+            color: #000000;
             outline: none;
         }
         .loading-screen {
@@ -59,6 +77,10 @@
                 height: 100%;
                 opacity: 100%;
             }
+            80% {
+                height: 100%;
+                opacity: 100%;
+            }
             100% {
                 height: 100%;
                 opacity: 0%;
@@ -67,10 +89,25 @@
         .wipe-effect {
             animation: wipeAnimation 2s ease forwards;
         }
+        .wip-element {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 200;
+            background-color: transparent;
+            color: red;
+            font-size: 600px;
+            text-align: center;
+            transform: rotate(-35deg);
+            z-index: 999; /* Ensure it's on top of other content */
+            overflow: hidden;
+            opacity: 0;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GUI</title>
+    <title id="titel">GUI</title>
 </head>
 <body>
     <button id="connectButton">Connect to Serial</button>
@@ -78,11 +115,21 @@
     <div class="image-container">
         <img src="GUI\welkom-pagina.png" id="mainImage" alt="welkom-pagina">
     </div>
-    <div class="textbox-container">
-        <input type="text" id="textbox">
+    <div class="textbox-container" id="ondertitel">
+        <input type="text" id="ondertitelVeld" value="____">
+    </div>
+    <div class="textbox-container" id="keuze-1">
+        <input type="text" id="keuze1" value="">
+    </div>
+    <div class="textbox-container" id="keuze-2">
+        <input type="text" id="keuze2" value="">
+    </div>
+    <div class="textbox-container" id="keuze-3">
+        <input type="text" id="keuze3" value="">
     </div>
     <script src="main.js"></script>
     <script src="serial-coms.js"></script>
     <div id="loadingScreen" class="loading-screen"></div>
+    <div class="wip-element" id="wip">W.I.P</div>
 </body>
 </html>

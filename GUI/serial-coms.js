@@ -1,3 +1,43 @@
+let waarde;
+let available = true;
+
+let collectingIBAN = "";
+let IBAN = "";
+
+let reader
+let writer
+
+
+async function writeSerial(n) {
+  try {
+    await writer.write(new Uint8Array([n]));
+  } catch (error) {
+    console.error('Error writing data:', error);
+  }
+}
+
+function makeAvailable() {
+  setTimeout(function() {
+    available = true;
+  }, 2000);
+}
+
+function HandleSerialInput() {
+  if (waarde != NaN && waarde >= 100 && waarde < 112) {
+    if (available) {
+      available = false;
+      changePageTo(waarde);
+      makeAvailable();
+    }
+  }else if (waarde >= 200 && waarde < 212) {
+    if (currentPagina == PINinvoer) {
+      setPin(waarde);
+    }else if (currentPagina == bedragKeuze) {
+      setBedrag(waarde);
+    }
+  }
+}
+
 document.getElementById('connectButton').addEventListener('click', async () => {
   document.getElementById('connectButton').style.display = "none";
   try {
@@ -5,7 +45,9 @@ document.getElementById('connectButton').addEventListener('click', async () => {
     await port.open({ baudRate: 9600 });
     console.log('Serial port opened:', port);
 
-    const reader = port.readable.getReader();
+    reader = port.readable.getReader();
+    writer = port.writable.getWriter();
+
     while (true) {
       try {
         const { value, done } = await reader.read();
@@ -14,18 +56,40 @@ document.getElementById('connectButton').addEventListener('click', async () => {
           break;
         }
         // ---------------------------------------------
-        const waarde = Number(value);
-        if (waarde != NaN) {
-          changePageTo(waarde);
+        /*
+        IBAN is tussen 48 en 90
+        100 - 110 is knoppen
+        200 - 212 is numpad
+        */
+        console.log(value);
+        waarde = Number(value);
+        if (waarde != NaN && waarde > 99 && waarde < 213) {
+          console.log(waarde)
+          HandleSerialInput();
         }
-      
+        value.forEach(element => {
+          // console.log(String.fromCharCode(element));
+          if (element == 24) {
+            console.log(waarde);
+            setPage(start);
+          }
+          if (element >47 && element < 99) {
+            collectingIBAN += String.fromCharCode(element);
+          }
+        });
+        if (collectingIBAN.length == 18) {
+          IBAN = collectingIBAN;
+          console.log(IBAN);
+          collectingIBAN = "";
+          checkIBAN();
+        }
 
 
         //----------------------------------------------
       } catch (err) {
         console.error('Error reading data:', err);
         break;
-      }
+      }      
     }
   } catch (err) {
     console.error('Error opening serial port:', err);
