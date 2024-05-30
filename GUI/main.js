@@ -319,8 +319,10 @@ function changePageTo(option) {
                 case bonKeuze:
                     //bon printer NIET activeren
                     setPage(einde);
+                    break;
                 case OnvoldoendeSaldo:
                     setPage(hoofdMenu);
+                    break;
                 default:
                     break;
             }
@@ -359,13 +361,18 @@ function changePageTo(option) {
                     break;
                 case snelPinnen:
                     if (checkSaldo(70)) {
+                        writeSerial(1);
+                        writeSerial(1);
+                        writeSerial(0); 
                         setPage(bonKeuze);
+
                     }else{
                         setPage(OnvoldoendeSaldo);
                     }
                     break;
                 case hoofdMenu:
                     setPage(snelPinnen);
+                    break;
                 case bonKeuze:
                     //bon printer activeren
                     setPage(einde);
@@ -386,6 +393,9 @@ function changePageTo(option) {
                     GekozenBedrag = '10';
                     setOndertitel(GekozenBedrag);
                     if (checkSaldo(10)) {
+                        writeSerial(0);
+                        writeSerial(0);
+                        writeSerial(1);
                         setPage(bonKeuze);
                     }else{
                         setPage(OnvoldoendeSaldo);
@@ -403,6 +413,9 @@ function changePageTo(option) {
                     GekozenBedrag = '50';
                     setOndertitel(GekozenBedrag);
                     if (checkSaldo(parseInt(GekozenBedrag))) {
+                        writeSerial(1);
+                        writeSerial(0);
+                        writeSerial(0);
                         setPage(bonKeuze);
                     }else{
                         setPage(OnvoldoendeSaldo);
@@ -420,7 +433,12 @@ function changePageTo(option) {
                     GekozenBedrag = '20';
                     setOndertitel(GekozenBedrag);
                     if (checkSaldo(parseInt(GekozenBedrag))) {
+                        writeSerial(0);
+                        writeSerial(1);
+                        writeSerial(0);
                         setPage(bonKeuze);
+                    }else{
+                        setPage(OnvoldoendeSaldo);
                     }
                     break;
                 case biljetKeuze:
