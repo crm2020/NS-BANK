@@ -363,6 +363,7 @@ function changePageTo(option) {
                     if (checkSaldo(70)) {
                         writeSerial(1);
                         writeSerial(1);
+                        writeSerial(1);
                         writeSerial(0); 
                         setPage(bonKeuze);
 
@@ -374,7 +375,7 @@ function changePageTo(option) {
                     setPage(snelPinnen);
                     break;
                 case bonKeuze:
-                    //bon printer activeren
+                    writeSerial(2);
                     setPage(einde);
                     break;
                 case biljetKeuze:
@@ -393,6 +394,7 @@ function changePageTo(option) {
                     GekozenBedrag = '10';
                     setOndertitel(GekozenBedrag);
                     if (checkSaldo(10)) {
+                        writeSerial(1);
                         writeSerial(0);
                         writeSerial(0);
                         writeSerial(1);
@@ -414,6 +416,7 @@ function changePageTo(option) {
                     setOndertitel(GekozenBedrag);
                     if (checkSaldo(parseInt(GekozenBedrag))) {
                         writeSerial(1);
+                        writeSerial(1);
                         writeSerial(0);
                         writeSerial(0);
                         setPage(bonKeuze);
@@ -433,6 +436,7 @@ function changePageTo(option) {
                     GekozenBedrag = '20';
                     setOndertitel(GekozenBedrag);
                     if (checkSaldo(parseInt(GekozenBedrag))) {
+                        writeSerial(1);
                         writeSerial(0);
                         writeSerial(1);
                         writeSerial(0);

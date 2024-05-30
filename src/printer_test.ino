@@ -15,8 +15,8 @@
 // If using hardware serial instead, comment out or remove these lines:
 
 #include "SoftwareSerial.h"
-#define TX_PIN 6 // Arduino transmit  YELLOW WIRE  labeled RX on printer
-#define RX_PIN 5 // Arduino receive   GREEN WIRE   labeled TX on printer
+#define TX_PIN 14 // Arduino transmit  YELLOW WIRE  labeled RX on printer
+#define RX_PIN 15 // Arduino receive   GREEN WIRE   labeled TX on printer
 
 SoftwareSerial mySerial(RX_PIN, TX_PIN); // Declare SoftwareSerial obj first
 Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
