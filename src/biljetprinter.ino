@@ -11,7 +11,9 @@ int inputs[3][2] = {
 
 int IRSens = 2;
 
-int geld[3] = {4, 6, 1}; // 10, 20, 50
+int check = 0;
+
+int geld[3] = {0, 0, 0}; // 10, 20, 50
 
 void bakjeIn() {
   analogWrite(bakjeMotor[0], 200);
@@ -22,6 +24,7 @@ void bakjeIn() {
 }
 
 void bakjeUit() {
+  Serial.println("Bakje");
   analogWrite(bakjeMotor[0], 0);
   analogWrite(bakjeMotor[1], 200);
   delay(1500);  // check timing
@@ -46,7 +49,7 @@ void stop() {
 }
 
 void printGeld() {
-  // Ergens check voor reed sensor als we die gaan gebruiken (!!)
+  Serial.println("Print");
   for (int j = 0; j < LENGTH; j++) {
     while (geld[j] > 0) {
       draai(j);
@@ -61,13 +64,17 @@ void printGeld() {
 }
 
 void krijgGeld() {
-  int j = 0;
+  Serial.println("Krijg");
+  int index = 0;
   while (Wire.available()) { // peripheral may send less than requested
-    int i = Wire.read(); // receive a byte as int
-    geld[j] = i;
-    j++;
-    Serial.print(j); Serial.print(": "); Serial.println(i);
+    int aantal = Wire.read(); // receive a byte as int
+    Serial.println(aantal);
+    geld[index] = aantal;
+    Serial.print(index); Serial.print(": "); 
+    Serial.println(geld[index]);
+    index++;
   }
+  check = 1;
 }
 
 void setup() {
@@ -83,10 +90,12 @@ void setup() {
   pinMode(IRSens, INPUT);
   pinMode(bakjeMotor[0], OUTPUT);
   pinMode(bakjeMotor[1], OUTPUT);
-
-  printGeld();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  if (check) {
+    printGeld();
+    check = 0;
+  }
 }
