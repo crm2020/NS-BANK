@@ -70,11 +70,11 @@ Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
 
 
 String location = "Wijnhaven Rotterdam";
-String date = "30/05/2024";
+String date = "07/06/2024";
 String time = "12:05";
 int transID = 12902;
-String bonIBAN = "###########093";
-int bedrag = 50;
+String bonIBAN = "***********093";
+int bedrag = 0;
 
 #define SS_PIN 53  // MEGA: 53
 #define RST_PIN 48  // MEGA: 5
@@ -263,6 +263,7 @@ void loop() {
 
   //geld printer=========
   int request = Serial.read();
+  
   int vijftig, twintig, tien;
   if(request == 1){
     vijftig = Serial.read();
@@ -277,7 +278,12 @@ void loop() {
 
   //bon printer============
   }else if(request == 2){
-    Serial.write(4);
+    int hundreds = Serial.read();
+    int tens = Serial.read();
+    bedrag = hundreds*100+tens*10;
+    int hours = Serial.read();
+    int minutes = Serial.read();
+    time = String(hours) + ":" + String(minutes);
     printBon();
   }
 

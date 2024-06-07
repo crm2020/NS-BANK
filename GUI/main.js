@@ -1,3 +1,7 @@
+const url = '' //url
+const apiData = {}
+
+const dateObject = new Date();
 const mainImage = document.getElementById('mainImage');
 let currentPagina = null;
 let ondertitel = document.getElementById('ondertitelVeld');
@@ -69,6 +73,19 @@ keuze_1.style.opacity = 0;
 keuze_2.style.opacity = 0;
 keuze_3.style.opacity = 0;
 
+function printBon() {
+    writeSerial(2);
+    if (GekozenBedrag.length == 2) {
+        writeSerial('0');
+        writeSerial(GekozenBedrag[0]);
+    }else{
+        writeSerial(GekozenBedrag[0]);
+        writeSerial(GekozenBedrag[1]);
+    }
+    writeSerial(dateObject.getHours());
+    writeSerial(dateObject.getMinutes());
+}
+
 function checkIBAN() {
     try{
         let sqlcheck = 'SELECT IBAN FROM banking';
@@ -119,7 +136,6 @@ function clearSubtitle(value) {
             setOndertitel(pin);
             break;
         case "GekozenBedrag":
-            GekozenBedrag = "";
             setOndertitel(GekozenBedrag);
         default:
             setOndertitel('');
@@ -278,9 +294,9 @@ function setPage(page){
     }
 
     if (currentPagina == einde) {
-        pin = "";
-        GekozenBedrag = "";
         setTimeout(() => {
+            pin = "";
+            GekozenBedrag = "";
             setPage(start)
         }, 11000);
     }
@@ -361,6 +377,7 @@ function changePageTo(option) {
                     break;
                 case snelPinnen:
                     if (checkSaldo(70)) {
+                        GekozenBedrag = "70";
                         writeSerial(1);
                         writeSerial(1);
                         writeSerial(1);
@@ -375,7 +392,7 @@ function changePageTo(option) {
                     setPage(snelPinnen);
                     break;
                 case bonKeuze:
-                    writeSerial(2);
+                    printBon();
                     setPage(einde);
                     break;
                 case biljetKeuze:
