@@ -1,4 +1,5 @@
-const url = "http://145.24.223.91:8080/" //url
+const url = '' //url
+const apiData = {}
 
 const dateObject = new Date();
 const mainImage = document.getElementById('mainImage');
@@ -21,7 +22,8 @@ let optie_2 ={
     "10" : 0
 };
 let optie_3 ={            
-    "50" : 0,    "20" : 0,
+    "50" : 0,
+    "20" : 0,
     "10" : 0
 };
 
@@ -71,48 +73,6 @@ keuze_1.style.opacity = 0;
 keuze_2.style.opacity = 0;
 keuze_3.style.opacity = 0;
 
-function apiRequest() { //fuck deze kut functie, boeit niet
-    
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      };
-    fetch(url, )
-}
-
-function checkPin(){ // czech bij database
-    const data = {
-        iban: IBAN,
-        pin: pin
-      };
-
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      };
-    fetch(url+"api/accountinfo", requestOptions)
-    .then(response => {
-        if (!response.ok) { 
-        throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-}
-
-
 function printBon() {
     writeSerial(2);
     if (GekozenBedrag.length == 2) {
@@ -127,6 +87,25 @@ function printBon() {
 }
 
 function checkIBAN() {
+    try{
+        let sqlcheck = 'SELECT IBAN FROM banking';
+        con.query(sqlcheck,function (_err, result) {
+            if (result == IBAN){
+                IBANcorrect = true;
+            }
+            if(result !== IBAN){
+                IBANcorrect = false;
+            }
+
+        });
+    }
+
+    catch (err) {
+        console.log(err);
+        console.log("error locating table");
+        // return 0;
+    }
+
     IBANcorrect = false;
     if (IBAN.length == 18) {
         IBANcorrect = true; 
@@ -141,12 +120,9 @@ function checkIBAN() {
     }
 }
 
-function checkSaldo(amount) {
-    // als amount check of account genoeg saldo heeft bij database doe dan een withdraw met de gegevn amount
-    // als geen amount return saldo
-
-
+function checkSaldo(_amount) {
     return true;
+    //check bij database
 }
 
 function setOndertitel(value) {
@@ -226,7 +202,25 @@ function setPage(page){
 
     
     if (currentPagina == saldo) {
-        setOndertitel(checkSaldo() + "1365")
+        // try{
+        //     let sqlcheck = 'SELECT Balance FROM Account';
+        //     con.query(sqlcheck,function (err, result) {
+        //         if (result == saldo){
+        //             IBANcorrect = true;
+        //         }
+        //         if(result !== saldo){
+        //             IBANcorrect = false;
+        //         }
+    
+        //     });
+        // }
+    
+        // catch (err) {
+        //     console.log(err);
+        //     console.log("error");
+        //     return 0;
+        // }
+        setOndertitel('1365') //check bij database
     }
 
     if (currentPagina == biljetKeuze) {
@@ -351,7 +345,7 @@ function changePageTo(option) {
         }else if (option == ok) {
             switch (currentPagina) {
                 case PINinvoer:
-                    pinCorrect = checkPin(); // check hier of de pin code klopt
+                    pinCorrect = false //check bij database
                     if (pin.length == 4 || pinCorrect) {
                         setPage(hoofdMenu);
                         setPin(210);
