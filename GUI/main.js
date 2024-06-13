@@ -1,5 +1,10 @@
-const url = '' //url
-const apiData = {}
+const { response } = require("express");
+
+const url = 'http://14524.223.91:8080' //url
+const apiData = {
+    uid: 297,
+    pincode: pin
+}
 
 const dateObject = new Date();
 const mainImage = document.getElementById('mainImage');
@@ -121,8 +126,31 @@ function checkIBAN() {
 }
 
 function checkSaldo(_amount) {
-    return true;
     //check bij database
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+      fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 404) {
+                    throw new Error("Data not found");
+                } else if (response.status === 500) {
+                    throw new error("Network response was not ok");
+                }
+            }
+            return response.json();
+        })
+        .then(data => {outputElement.textContent = JSON.stringify(data, null,2 );
+        })
+        .catch(error => {
+            console.error
+            ('Error: ', error);
+        });
 }
 
 function setOndertitel(value) {
